@@ -1,0 +1,11 @@
+version: '2'
+
+services:
+  proxy:
+      build: .
+      image: proxy
+      volumes:
+            - "./HTTPProxy:/HTTPProxy"
+            - "./logs:/var/log/erss"
+      ports:
+            - "12345:12345"

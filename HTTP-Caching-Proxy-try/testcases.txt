@@ -1,0 +1,143 @@
+How to test our test cases:
+Because of Computer and internet settings or delay, please start our proxy first, then open the pre-setted browser that use the proxy, visit the 
+website until the website fully loaded and check proxy.log.However, because of variable network conditions and computer settings(which has not been
+pre-required in the project), the outputs may still vary, but our output in proxy.log has shown a logical proxy query process below).
+PLEASE DISABLE BROWSER CACHE BEFORE TESTING USING BROWSER!!!!!!!
+
+The following result for GET method is generated using curl -X GET "URL"
+---------------------------------------------------------------------------------------------------------------------------------------------------
+test case 1: Test GET and POST http://httpbin.org/forms/post 
+---------------------------------------------------------------------------------------------------------------------------------------------------
+0: "GET http://httpbin.org/forms/post HTTP/1.1" from 10.197.14.34 @ Tue Feb 28 16:18:37 2023
+0: not in cache
+0: Requesting "GET http://httpbin.org/forms/post HTTP/1.1" from httpbin.org
+0: Received "HTTP/1.1 200 OK" from httpbin.org
+0: cached, does not expire 
+0: Responding "HTTP/1.1 200 OK"
+1: "POST http://httpbin.org/post HTTP/1.1" from 10.197.14.34 @ Tue Feb 28 16:18:40 2023
+1: Responding "HTTP/1.1 200 OK"
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+test case 2: Cached, expired and do validation, returned 200 OK
+            http://httpbin.org/cache/3
+---------------------------------------------------------------------------------------------------------------------------------------------------
+0: "GET http://httpbin.org/cache/3 HTTP/1.1" from 127.0.0.1 @ Tue Feb 28 16:26:13 2023
+0: not in cache
+0: Requesting "GET http://httpbin.org/cache/3 HTTP/1.1" from httpbin.org
+0: Received "HTTP/1.1 200 OK" from httpbin.org
+0: cached, expires at Tue Feb 28 16:26:16 2023
+0: Responding "HTTP/1.1 200 OK"
+1: "GET http://httpbin.org/cache/3 HTTP/1.1" from 127.0.0.1 @ Tue Feb 28 16:26:23 2023
+1: in cache, but expired at Tue Feb 28 16:26:16 2023
+1: Validating "GET http://httpbin.org/cache/3 HTTP/1.1" from httpbin.org
+1: Recieve validation "HTTP/1.1 200 OK" from httpbin.org
+1: Responding "HTTP/1.1 200 OK"
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+test case 3: Cached, does not expired, returned cached result
+            http://httpbin.org/cache/60
+---------------------------------------------------------------------------------------------------------------------------------------------------
+0: "GET http://httpbin.org/cache/60 HTTP/1.1" from 127.0.0.1 @ Tue Feb 28 16:39:33 2023
+0: not in cache
+0: Requesting "GET http://httpbin.org/cache/60 HTTP/1.1" from httpbin.org
+0: Received "HTTP/1.1 200 OK" from httpbin.org
+0: cached, expires at Tue Feb 28 16:40:33 2023
+0: Responding "HTTP/1.1 200 OK"
+1: "GET http://httpbin.org/cache/60 HTTP/1.1" from 127.0.0.1 @ Tue Feb 28 16:39:47 2023
+1: in cache, valid
+1: Responding "HTTP/1.1 200 OK"
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+test case 4: Cached, expired and do validation, returned 304 not modified 
+            http://feedburner.google.com/fb/i/icn/feed-icon-10x10.gif
+---------------------------------------------------------------------------------------------------------------------------------------------------
+4: "GET http://feedburner.google.com/fb/i/icn/feed-icon-10x10.gif HTTP/1.1" from 127.0.0.1 @ Tue Feb 28 19:15:34 2023
+4: not in cache
+4: Requesting "GET http://feedburner.google.com/fb/i/icn/feed-icon-10x10.gif HTTP/1.1" from feedburner.google.com
+4: Received "HTTP/1.1 200 OK" from feedburner.google.com
+4: cached, but requires re-validation
+4: Responding "HTTP/1.1 200 OK"
+5: "GET http://feedburner.google.com/fb/i/icn/feed-icon-10x10.gif HTTP/1.1" from 127.0.0.1 @ Tue Feb 28 19:15:47 2023
+5: in cache, requires validation
+5: Validating "GET http://feedburner.google.com/fb/i/icn/feed-icon-10x10.gif HTTP/1.1" from feedburner.google.com
+5: Recieve validation "HTTP/1.1 304 Not Modified" from feedburner.google.com
+5: Responding "HTTP/1.1 200 OK"
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+test case 5: cannot cache "no-store" and chunked data http://www.httpwatch.com/httpgallery/chunked/chunkedimage.aspx 
+---------------------------------------------------------------------------------------------------------------------------------------------------
+4: "GET http://www.httpwatch.com/httpgallery/chunked/chunkedimage.aspx HTTP/1.1" from 127.0.0.1 @ Tue Feb 28 16:14:49 2023
+4: not in cache
+4: Requesting "GET http://www.httpwatch.com/httpgallery/chunked/chunkedimage.aspx HTTP/1.1" from www.httpwatch.com
+4: Received "HTTP/1.1 200 OK" from www.httpwatch.com
+4: not cacheable because "no-store"
+4: Responding "HTTP/1.1 200 OK"
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+test case 6:  cached max-age=0 need revalidation http://httpbin.org/cache/0
+---------------------------------------------------------------------------------------------------------------------------------------------------
+0: "GET http://httpbin.org/cache/0 HTTP/1.1" from 127.0.0.1 @ Tue Feb 28 19:04:51 2023
+0: not in cache
+0: Requesting "GET http://httpbin.org/cache/0 HTTP/1.1" from httpbin.org
+0: Received "HTTP/1.1 200 OK" from httpbin.org
+0: cached, but requires re-validation
+0: Responding "HTTP/1.1 200 OK"
+1: "GET http://httpbin.org/cache/0 HTTP/1.1" from 127.0.0.1 @ Tue Feb 28 19:05:05 2023
+1: in cache, requires validation
+1: Validating "GET http://httpbin.org/cache/0 HTTP/1.1" from httpbin.org
+1: Recieve validation "HTTP/1.1 200 OK" from httpbin.org
+1: Responding "HTTP/1.1 200 OK"
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+test case 7: LRU policy (set cache size to 3 in proxy.cpp)
+    http://beautifulshinysublimetreasure.neverssl.com/online/
+    http://majesticsplendidquietjoke.neverssl.com/online/
+    http://grandglowingbeautifullove.neverssl.com/online/
+    http://slowfinewonderfulstars.neverssl.com/online/
+---------------------------------------------------------------------------------------------------------------------------------------------------
+0: "GET http://beautifulshinysublimetreasure.neverssl.com/online/ HTTP/1.1" from 127.0.0.1 @ Tue Feb 28 19:10:12 2023
+0: not in cache
+0: Requesting "GET http://beautifulshinysublimetreasure.neverssl.com/online/ HTTP/1.1" from beautifulshinysublimetreasure.neverssl.com
+0: Received "HTTP/1.1 200 OK" from beautifulshinysublimetreasure.neverssl.com
+0: cached, does not expire 
+0: Responding "HTTP/1.1 200 OK"
+1: "GET http://majesticsplendidquietjoke.neverssl.com/online/ HTTP/1.1" from 127.0.0.1 @ Tue Feb 28 19:10:43 2023
+1: not in cache
+1: Requesting "GET http://majesticsplendidquietjoke.neverssl.com/online/ HTTP/1.1" from majesticsplendidquietjoke.neverssl.com
+1: Received "HTTP/1.1 200 OK" from majesticsplendidquietjoke.neverssl.com
+1: cached, does not expire 
+1: Responding "HTTP/1.1 200 OK"
+2: "GET http://grandglowingbeautifullove.neverssl.com/online/ HTTP/1.1" from 127.0.0.1 @ Tue Feb 28 19:11:34 2023
+2: not in cache
+2: Requesting "GET http://grandglowingbeautifullove.neverssl.com/online/ HTTP/1.1" from grandglowingbeautifullove.neverssl.com
+2: Received "HTTP/1.1 200 OK" from grandglowingbeautifullove.neverssl.com
+2: cached, does not expire 
+2: Responding "HTTP/1.1 200 OK"
+3: "GET http://slowfinewonderfulstars.neverssl.com/online/ HTTP/1.1" from 127.0.0.1 @ Tue Feb 28 19:12:00 2023
+3: not in cache
+3: Requesting "GET http://slowfinewonderfulstars.neverssl.com/online/ HTTP/1.1" from slowfinewonderfulstars.neverssl.com
+3: Received "HTTP/1.1 200 OK" from slowfinewonderfulstars.neverssl.com
+(no-id): NOTE evicted "beautifulshinysublimetreasure.neverssl.com: http://beautifulshinysublimetreasure.neverssl.com/online/" from cache
+3: cached, does not expire 
+3: Responding "HTTP/1.1 200 OK"
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+test case 8: test CONNECT 
+---------------------------------------------------------------------------------------------------------------------------------------------------
+0: "CONNECT duke.edu:443 HTTP/1.1" from 10.197.14.34 @ Tue Feb 28 18:34:18 2023
+0: Responding "HTTP/1.1 200 OK"
+5: "CONNECT duke.edu:443 HTTP/1.1" from 10.197.14.34 @ Tue Feb 28 18:34:18 2023
+4: "CONNECT duke.edu:443 HTTP/1.1" from 10.197.14.34 @ Tue Feb 28 18:34:18 2023
+3: "CONNECT duke.edu:443 HTTP/1.1" from 10.197.14.34 @ Tue Feb 28 18:34:18 2023
+6: "CONNECT duke.edu:443 HTTP/1.1" from 10.197.14.34 @ Tue Feb 28 18:34:18 2023
+9: "CONNECT duke.edu:443 HTTP/1.1" from 10.197.14.34 @ Tue Feb 28 18:34:18 2023
+8: "CONNECT duke.edu:443 HTTP/1.1" from 10.197.14.34 @ Tue Feb 28 18:34:18 2023
+10: "CONNECT duke.edu:443 HTTP/1.1" from 10.197.14.34 @ Tue Feb 28 18:34:18 2023
+3: Responding "HTTP/1.1 200 OK"
+9: Responding "HTTP/1.1 200 OK"
+5: Responding "HTTP/1.1 200 OK"
+4: Responding "HTTP/1.1 200 OK"
+8: Responding "HTTP/1.1 200 OK"
+6: Responding "HTTP/1.1 200 OK"
+10: Responding "HTTP/1.1 200 OK"
+

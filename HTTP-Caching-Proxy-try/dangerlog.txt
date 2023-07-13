@@ -1,0 +1,22 @@
+1. We applied Boost::Asio and Boost::Beast libraries to connect proxy with clients and servers and parse requests and responses. We treated requests 
+and responses that cannot be parsed by the Boost::Beast library as invalid.  We trust the validity of the library but it is possible that they have
+undetected bugs which would cause our proxy to fail. 
+
+2. We encountered many empty requests from the client. In this case, the Beast::read method would throw the end-of-stream exception. We catch this
+exception and close the thread. For other requests that cannot be parsed by the Beast library, we treated them as malformed requests. in such cases,
+we send 400 responses to the client. 
+
+3. Invalid hostname handle:  At first, we did not handle the error that may happen when connecting the proxy to the server. When we access one 
+webpage, http://vpod1q.qa.lijit.com/, boost cannot resolve this hostname to an IP address. Then we fixed it by catching the exception thrown by 
+boost and ignoring the request, and logging it. 
+
+4. Cache lock: At first, a simple mutex is applied to the cache whenever the proxy needs to read and write into the cache. However, it is not 
+efficient because multiple threads should be able to read the cache at the same time. Later we applied a read/write lock for improvement. 
+
+5. Connection tunnel closed: we used synchronized read and write for the connection between the client and server. The tcp::socket::available() 
+method is implemented to see if there is data to read from either socket. Since it is not blocking, we cannot use its return value ==0 to decide 
+whether the connection is closed. The methodology we applied is to wait for the read and write methods to throw exceptions. However, we did not 
+specify if the exception is caused by closed sockets or other possible errors, we generally treated exceptions as signals for closed tunnels.
+
+6. For exceptions that may be thrown in GET and POST methods, we cached them and send 502 responses to the client. 
+

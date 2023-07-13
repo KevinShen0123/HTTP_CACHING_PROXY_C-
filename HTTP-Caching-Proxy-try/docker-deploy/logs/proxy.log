@@ -1,0 +1,46 @@
+0: "CONNECT play.google.com:443 HTTP/1.1" from 10.197.14.34 @ Tue Feb 28 23:41:36 2023
+0: Responding "HTTP/1.1 200 OK"
+1: "CONNECT play.google.com:443 HTTP/1.1" from 10.197.14.34 @ Tue Feb 28 23:41:36 2023
+1: Responding "HTTP/1.1 200 OK"
+2: "CONNECT mozilla.cloudflare-dns.com:443 HTTP/1.1" from 10.197.14.34 @ Tue Feb 28 23:41:37 2023
+2: Responding "HTTP/1.1 200 OK"
+4: "POST http://ocsp.digicert.com/ HTTP/1.1" from 10.197.14.34 @ Tue Feb 28 23:41:37 2023
+4: Responding "HTTP/1.1 200 OK"
+5: "CONNECT www.youtube.com:443 HTTP/1.1" from 10.197.14.34 @ Tue Feb 28 23:41:39 2023
+5: Responding "HTTP/1.1 200 OK"
+6: "CONNECT d23tl967axkois.cloudfront.net:443 HTTP/1.1" from 10.197.14.34 @ Tue Feb 28 23:41:42 2023
+7: "CONNECT www.expedia.com:443 HTTP/1.1" from 10.197.14.34 @ Tue Feb 28 23:41:42 2023
+6: Responding "HTTP/1.1 200 OK"
+7: Responding "HTTP/1.1 200 OK"
+8: "GET http://httpbin.org/favicon.ico HTTP/1.1" from 10.197.14.34 @ Tue Feb 28 23:42:03 2023
+8: not in cache
+8: Requesting "GET http://httpbin.org/favicon.ico HTTP/1.1" from httpbin.org
+8: Received "HTTP/1.1 404 NOT FOUND" from httpbin.org
+8: not cacheable because "Response code is 404"
+8: Responding "HTTP/1.1 404 NOT FOUND"
+9: "GET http://httpbin.org/forms/post HTTP/1.1" from 10.197.14.34 @ Tue Feb 28 23:42:04 2023
+9: not in cache
+9: Requesting "GET http://httpbin.org/forms/post HTTP/1.1" from httpbin.org
+9: Received "HTTP/1.1 200 OK" from httpbin.org
+9: cached, does not expire 
+9: Responding "HTTP/1.1 200 OK"
+10: "GET http://httpbin.org/favicon.ico HTTP/1.1" from 10.197.14.34 @ Tue Feb 28 23:42:05 2023
+10: not in cache
+10: Requesting "GET http://httpbin.org/favicon.ico HTTP/1.1" from httpbin.org
+10: Received "HTTP/1.1 404 NOT FOUND" from httpbin.org
+10: not cacheable because "Response code is 404"
+10: Responding "HTTP/1.1 404 NOT FOUND"
+11: "POST http://httpbin.org/post HTTP/1.1" from 10.197.14.34 @ Tue Feb 28 23:42:06 2023
+11: Responding "HTTP/1.1 200 OK"
+12: "GET http://www.httpwatch.com/httpgallery/chunked/chunkedimage.aspx HTTP/1.1" from 10.197.14.34 @ Tue Feb 28 23:42:08 2023
+12: not in cache
+12: Requesting "GET http://www.httpwatch.com/httpgallery/chunked/chunkedimage.aspx HTTP/1.1" from www.httpwatch.com
+12: Received "HTTP/1.1 200 OK" from www.httpwatch.com
+12: not cacheable because "no-store"
+12: Responding "HTTP/1.1 200 OK"
+13: "GET http://www.httpwatch.com/favicon.ico HTTP/1.1" from 10.197.14.34 @ Tue Feb 28 23:42:12 2023
+13: not in cache
+13: Requesting "GET http://www.httpwatch.com/favicon.ico HTTP/1.1" from www.httpwatch.com
+13: Received "HTTP/1.1 200 OK" from www.httpwatch.com
+13: cached, but requires re-validation
+13: Responding "HTTP/1.1 200 OK"
